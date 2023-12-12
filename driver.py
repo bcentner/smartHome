@@ -10,7 +10,7 @@ def setup():
     shutil.copy2("facial_recognition/encodings.pickle", dest)
     print("Copyied encodings")
     
-  from facial_recognition import facial_req
+  import facial_req
 
 def cleanup():
   try:
