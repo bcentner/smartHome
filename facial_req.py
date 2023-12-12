@@ -13,7 +13,8 @@ import threading
 
 class FaceRecognition:
 	def __init__(self) -> None:
-		self._new_person_found = ""
+		self._new_person_found = False
+		self._person = ""
 		self._lock = threading.Lock()
 		self.running = False
 		self.thread = threading.Thread(target=self.run)
@@ -29,13 +30,18 @@ class FaceRecognition:
 		self.thread.join()
 
 	@property
-	def new_person_found(self) -> str:
+	def new_person_found(self) -> bool:
 		with self._lock:
 			return self._new_person_found
+	
+	@property
+	def get_name(self) -> str:
+		with self._lock:
+			return self._person
 		
 	def reset_new_person_found(self) -> None:
 		with self._lock:
-			self._new_person_found = ""
+			self._new_person_found = False
 
 	def run(self):
 		#Initialize 'currentname' to trigger only when a new person is identified.
@@ -103,7 +109,8 @@ class FaceRecognition:
 						currentname = name
 						print(f"Recognized {currentname}")
 						with self._lock:
-							self._new_person_found = currentname
+							self._person = currentname
+							self._new_person_found = True
 
 				# update the list of names
 				names.append(name)
