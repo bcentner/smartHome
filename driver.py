@@ -39,7 +39,7 @@ try:
     if face_system.new_person_found:
       # TODO: seperate name and found flag
       face_system.reset_new_person_found()
-      set_voice_and_speak(engine, f"Hello {face_system.get_name()}, it is nice to meet you.")
+      set_voice_and_speak(engine, f"Hello {face_system.get_name}, it is nice to meet you.")
       engine.runAndWait()
     time.sleep(1)
 except Exception as e:
