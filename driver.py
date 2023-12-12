@@ -1,5 +1,6 @@
 import pyttsx3
 import os
+import facial_req
 
 def setup():
   if os.path.exists("encodings.pickle"):
@@ -9,8 +10,6 @@ def setup():
     dest = os.path.join(os.getcwd(), "encodings.pickle")
     shutil.copy2("facial_recognition/encodings.pickle", dest)
     print("Copyied encodings")
-    
-  import facial_req
 
 def cleanup():
   try:
