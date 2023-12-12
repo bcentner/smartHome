@@ -1,20 +1,36 @@
-# TODO: import this elsewhere or set it up first
-# from facial_recognition import facial_req
-# import speech_recognition as sr
-# print(sr.__version__)
-
 import pyttsx3
-eng = pyttsx3.init()
-eng.setProperty('rate',70)
-voices = eng.getProperty('voices')
-for v in voices:
-  eng.setProperty('voice', v.id)
-  eng.say("Hello who is that over there?")
-eng.runAndWait()
+import os
 
-def driver():
-  print("asdf")
+def setup():
+  if os.path.exists("encodings.pickle"):
+    print("Found encodings")
+  else:
+    import shutil
+    dest = os.path.join(os.getcwd(), "encodings.pickle")
+    shutil.copy2("facial_recognition/encodings.pickle", dest)
+    print("Copyied encodings")
+    
+  from facial_recognition import facial_req
+
+def cleanup():
+  try:
+    os.remove("encodings.pickle")
+  except Exception as e:
+    print(f"Error:\t{e}")
+
+def init_engine():
+  eng = pyttsx3.init()
+  eng.setProperty('rate',160)
+  return eng
+
+def set_voice_and_speak(eng, text):
+  voices = eng.getProperty('voices')
+  eng.setProperty('voice', voices[16].id)
+  eng.say(text)
 
 
-if __name__ == "driver.py":
-  driver()
+setup()
+engine = init_engine()
+set_voice_and_speak(engine, "Hello, what is your name?")
+engine.runAndWait()
+cleanup()
