@@ -19,10 +19,12 @@ class FaceRecognition:
 		self.thread = threading.Thread(target=self.run)
 		
 	def start(self):
+		print("Starting face recognition")
 		self.running = True
 		self.thread.start()
 
 	def stop(self):
+		print("Stopping face recognition")
 		self.running = False
 		self.thread.join()
 

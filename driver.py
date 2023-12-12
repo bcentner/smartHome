@@ -1,6 +1,7 @@
 import pyttsx3
 import os
-import facial_req
+import time
+from facial_req import FaceRecognition
 
 def setup():
   if os.path.exists("encodings.pickle"):
@@ -30,6 +31,17 @@ def set_voice_and_speak(eng, text):
 
 setup()
 engine = init_engine()
-set_voice_and_speak(engine, "Hello, what is your name?")
-engine.runAndWait()
-cleanup()
+face_system = FaceRecognition()
+face_system.start()
+time.sleep(1)
+try:
+  while True:
+    if face_system.new_person_found:
+      set_voice_and_speak(engine, "Hello, what is your name?")
+      engine.runAndWait()
+    time.sleep(1)
+except Exception as e:
+  print(f"Exception:\t{e}")
+finally:
+  face_system.stop()
+  cleanup()
