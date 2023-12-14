@@ -54,8 +54,9 @@ class Users:
 
     def log_in(self, name: str):
         self._statuses.append(name)
-        thread = threading.Thread(target=self.get_input)
-        thread.start()
+        if not self._statuses:
+            thread = threading.Thread(target=self.get_input)
+            thread.start()
 
     def log_out(self, name: str):
         idx = self._statuses.index(name)
