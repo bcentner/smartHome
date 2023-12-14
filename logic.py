@@ -1,19 +1,22 @@
 import threading
 import requests
 from datetime import datetime
+import time
 
 def get_weather(format: str):
-    match format:
-        case "temp":
-            format = "t_2m:F"
-        case "wind":
-            format = "wind_speed_10m:ms"
-        case "precip":
-            format = "precip_24h:mm"
-        case "sunrise":
-            format = "sunrise:sql"
-        case "sunset":
-            format = "sunset:sql"
+    if format == "temp":
+        format = "t_2m:F"
+    elif format== "wind":
+        format = "wind_speed_10m:ms"
+    elif format == "precip":
+        format = "precip_24h:mm"
+    elif format == "sunrise":
+        format = "sunrise:sql"
+    elif format == "sunset":
+        format = "sunset:sql"
+    else:
+        print("Sorry, I don't know that command")
+        return
     cur_time = datetime.utcnow()
     formatted_datetime = cur_time.strftime('%Y-%m-%dT%H:%M:%SZ')
 
@@ -39,14 +42,14 @@ class Users:
         self._statuses.pop(idx)
 
     def get_input(self):
-        cmd = input(f"Hi. What would you like to do? ").lower()
-        match cmd:
-            case "lights":
+        while True:
+            cmd = input(f"Hi. What would you like to do? ").lower()
+            if cmd == "lights":
                 color = input("What color? ").lower()
                 # TODO: do color api stuff
-            case "weather":
+            elif cmd == "weather":
                 choice = input("Temp, wind, precip, sunrise, or sunset?").lower()
                 get_weather(format=choice)
-
-            case _:
+            else:
                 print("Sorry, I don't currently recognize that command")
+            time.sleep(1)
