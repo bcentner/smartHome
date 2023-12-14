@@ -32,6 +32,13 @@ def get_weather(format: str):
     #     print("Error " + resp.status_code)
     time.sleep(1.6)
     print(to_print)
+    url = f"https://api.meteomatics.com/{formatted_datetime}/{format}/41.8781,87.6298/html"
+    resp = requests.get(url=url)
+
+    if resp.status_code == 200:
+        print(resp)
+    else:
+        print("Error " + str(resp.status_code))
 
 class Users:
     def __init__(self) -> None:
