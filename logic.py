@@ -52,11 +52,11 @@ class Users:
         self._statuses = [] # name in list -> logged in
         self.eng = eng
         self.cur_user = ""
+        self.thread = threading.Thread(target=self.get_input)
 
     def log_in(self, name: str):
         if not self._statuses:
-            thread = threading.Thread(target=self.get_input)
-            thread.start()
+            self.thread.start()
         self._statuses.append(name)
         self.cur_user = self._statuses[0]
 
@@ -88,7 +88,14 @@ class Users:
             elif cmd == "music":
                 subprocess.run(["mpg123", "-vC", "music.mp3"])
             elif cmd == "logout":
+                set_voice_and_speak2(self.eng, f"Goodbye {self._statuses[0]}")
+                self.eng.runAndWait()
                 self._statuses.pop(0)
+                if not self._statuses:
+                    self.join()
+                else:
+                    set_voice_and_speak2(self.eng, f"Hello {self._statuses[0]}")
+                self.eng.runAndWait()
             elif cmd == "help":
                 set_voice_and_speak2(self.eng, "You may type lights, weather, music, or logout")
                 self.eng.runAndWait()

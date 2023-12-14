@@ -41,7 +41,7 @@ try:
     if face_system.new_person_found:
       users.log_in(face_system.get_name)
       face_system.reset_new_person_found()
-      set_voice_and_speak(engine, f"Hello {face_system.get_name}, it is nice to meet you.")
+      set_voice_and_speak(engine, f"Hello {face_system.get_name}")
       engine.runAndWait()
     time.sleep(1)
 except Exception as e:
