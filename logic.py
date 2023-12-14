@@ -53,10 +53,10 @@ class Users:
         self.eng = eng
 
     def log_in(self, name: str):
-        self._statuses.append(name)
         if not self._statuses:
             thread = threading.Thread(target=self.get_input)
             thread.start()
+        self._statuses.append(name)
 
     def log_out(self, name: str):
         idx = self._statuses.index(name)
