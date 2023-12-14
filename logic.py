@@ -29,7 +29,7 @@ def get_weather(format: str):
         print("Error " + resp.status_code)
 
 class Users:
-    def __init__(self, name: str) -> None:
+    def __init__(self) -> None:
         self._statuses = [] # name in list -> logged in
 
     def log_in(self, name: str):
