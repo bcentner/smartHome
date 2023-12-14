@@ -51,16 +51,14 @@ class Users:
     def __init__(self, eng) -> None:
         self._statuses = [] # name in list -> logged in
         self.eng = eng
+        self.cur_user = ""
 
     def log_in(self, name: str):
         if not self._statuses:
             thread = threading.Thread(target=self.get_input)
             thread.start()
         self._statuses.append(name)
-
-    def log_out(self, name: str):
-        idx = self._statuses.index(name)
-        self._statuses.pop(idx)
+        self.cur_user = self._statuses[0]
 
     def get_input(self):
         while True:
@@ -81,7 +79,7 @@ class Users:
                         color = [245, 84, 70]
                     elif color == "white":
                         color = [0, 0, 100]
-                    subprocess.run(cmd + ["hsv"] + colors)
+                    subprocess.run(cmd + ["hsv"] + color)
                 elif status == "off":
                     subprocess.run(cmd + ["off"])
             elif cmd == "weather":
@@ -89,8 +87,10 @@ class Users:
                 get_weather(format=choice)
             elif cmd == "music":
                 subprocess.run(["mpg123", "-vC", "music.mp3"])
+            elif cmd == "logout":
+                self._statuses.pop(0)
             elif cmd == "help":
-                set_voice_and_speak2(self.eng, "You may type lights, weather, or music")
+                set_voice_and_speak2(self.eng, "You may type lights, weather, music, or logout")
                 self.eng.runAndWait()
             else:
                 print("Sorry, I don't currently recognize that command")
