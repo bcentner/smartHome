@@ -92,10 +92,10 @@ class Users:
                 self.eng.runAndWait()
                 self._statuses.pop(0)
                 if not self._statuses:
-                    self.join()
+                    return
                 else:
                     set_voice_and_speak2(self.eng, f"Hello {self._statuses[0]}")
-                self.eng.runAndWait()
+                    self.eng.runAndWait()
             elif cmd == "help":
                 set_voice_and_speak2(self.eng, "You may type lights, weather, music, or logout")
                 self.eng.runAndWait()
