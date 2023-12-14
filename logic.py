@@ -3,6 +3,7 @@ import requests
 import subprocess
 from datetime import datetime
 import time
+from driver import set_voice_and_speak
 
 def get_weather(format: str):
     to_print = ""
@@ -34,8 +35,9 @@ def get_weather(format: str):
     print(to_print)
 
 class Users:
-    def __init__(self) -> None:
+    def __init__(self, eng) -> None:
         self._statuses = [] # name in list -> logged in
+        self.eng = eng
 
     def log_in(self, name: str):
         self._statuses.append(name)
@@ -58,11 +60,13 @@ class Users:
                     subprocess.run(cmd + ["brightness", val])
                     color = input("Color? ").lower()
                     if color == "red":
-                        color = "0 100 80"
+                        color = [0, 100, 80]
                     elif color == "green":
-                        color = "123 86 80"
+                        color = [123, 86, 80]
                     elif color == "blue":
-                        color = "245 84 70"
+                        color = [245, 84, 70]
+                    elif color == "white":
+                        color = [0, 0, 100]
                     subprocess.run(cmd + ["hsv", color])
                 elif status == "off":
                     subprocess.run(cmd + ["off"])
@@ -70,7 +74,11 @@ class Users:
                 choice = input("Temp, wind, precip, sunrise, or sunset?").lower()
                 get_weather(format=choice)
             elif cmd == "music":
-                pass
+                set_voice_and_speak(self.eng, "I am currently under construction")
+                self.eng.runAndWait()
+            elif cmd == "help":
+                set_voice_and_speak(self.eng, "You may type lights, weather, or music")
+                self.eng.runAndWait()
             else:
                 print("Sorry, I don't currently recognize that command")
             time.sleep(1)
