@@ -80,15 +80,14 @@ class Users:
                         color = [245, 84, 70]
                     elif color == "white":
                         color = [0, 0, 100]
-                    subprocess.run(cmd + ["hsv", color])
+                    subprocess.run(cmd + ["hsv"] + colors)
                 elif status == "off":
                     subprocess.run(cmd + ["off"])
             elif cmd == "weather":
                 choice = input("Temp, wind, precip, sunrise, or sunset?").lower()
                 get_weather(format=choice)
             elif cmd == "music":
-                set_voice_and_speak2(self.eng, "I am currently under construction")
-                self.eng.runAndWait()
+                subprocess.run(["mpg123", "-vC", "music.mp3"])
             elif cmd == "help":
                 set_voice_and_speak2(self.eng, "You may type lights, weather, or music")
                 self.eng.runAndWait()
