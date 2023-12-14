@@ -3,7 +3,13 @@ import requests
 import subprocess
 from datetime import datetime
 import time
-from driver import set_voice_and_speak
+
+# FIXME: use driver version
+def set_voice_and_speak2(eng, text):
+  voices = eng.getProperty('voices')
+  eng.setProperty('voice', voices[16].id)
+  eng.say(text)
+
 
 def get_weather(format: str):
     to_print = ""

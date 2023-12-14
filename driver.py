@@ -31,8 +31,8 @@ def set_voice_and_speak(eng, text):
 
 
 setup()
-users = Users()
 engine = init_engine()
+users = Users(engine)
 face_system = FaceRecognition()
 face_system.start()
 time.sleep(1)
