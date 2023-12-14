@@ -87,10 +87,10 @@ class Users:
                 choice = input("Temp, wind, precip, sunrise, or sunset?").lower()
                 get_weather(format=choice)
             elif cmd == "music":
-                set_voice_and_speak(self.eng, "I am currently under construction")
+                set_voice_and_speak2(self.eng, "I am currently under construction")
                 self.eng.runAndWait()
             elif cmd == "help":
-                set_voice_and_speak(self.eng, "You may type lights, weather, or music")
+                set_voice_and_speak2(self.eng, "You may type lights, weather, or music")
                 self.eng.runAndWait()
             else:
                 print("Sorry, I don't currently recognize that command")
