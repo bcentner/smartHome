@@ -1,5 +1,4 @@
 import cv2
-import threading
 from cvzone.HandTrackingModule import HandDetector
 # https://www.geeksforgeeks.org/creating-a-finger-counter-using-computer-vision-and-opencv-in-python/
 
