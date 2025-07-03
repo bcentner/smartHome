@@ -1,0 +1,63 @@
+# SmartHome Configuration File
+# Copy this to config.yaml and modify as needed
+
+# Voice Settings
+voice:
+  rate: 160
+  voice_index: 16  # Change this based on available voices on your system
+  volume: 1.0
+
+# Camera Settings
+camera:
+  source: 0  # 0 for default camera, 1 for external camera, etc.
+  framerate: 2
+  width: 500
+  detection_confidence: 0.8
+
+# Smart Light Settings
+smart_lights:
+  kasa_host: "192.168.12.238"  # Change to your light's IP address
+  kasa_port: 9999
+  default_brightness: 80
+  colors:
+    red: [0, 100, 80]
+    green: [123, 86, 80]
+    blue: [245, 84, 70]
+    white: [0, 0, 100]
+    purple: [280, 100, 80]
+    orange: [30, 100, 80]
+
+# Weather Settings
+weather:
+  api_url: "https://api.meteomatics.com"
+  location:
+    latitude: 41.8781
+    longitude: -87.6298
+    city: "Chicago"
+  cache_duration: 300  # 5 minutes in seconds
+  use_mock_data: true  # Set to false for real API calls
+
+# Facial Recognition Settings
+facial_recognition:
+  encodings_file: "facial_recognition/encodings.pickle"
+  tolerance: 0.6
+  detection_interval: 1.0  # seconds between detections
+
+# Music Settings
+music:
+  default_file: "music.mp3"
+  player: "mpg123"
+  volume: 80
+
+# System Settings
+system:
+  log_level: "INFO"  # DEBUG, INFO, WARNING, ERROR
+  log_file: "smartHome.log"
+  max_users: 5
+  session_timeout: 3600  # 1 hour in seconds
+
+# Hand Gesture Settings (Experimental)
+hand_gestures:
+  enabled: false
+  detection_confidence: 0.8
+  max_hands: 1 

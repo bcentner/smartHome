@@ -60,7 +60,7 @@ A Python-based smart home automation system that combines facial recognition, vo
 
    Or install manually:
    ```bash
-   pip install pyttsx3 opencv-python face-recognition imutils requests cvzone
+   pip install pyttsx3 opencv-python face-recognition imutils requests cvzone PyYAML
    ```
 
 3. **Install system dependencies**
@@ -75,33 +75,61 @@ A Python-based smart home automation system that combines facial recognition, vo
    # Download mpg123 from https://www.mpg123.de/
    ```
 
+4. **Setup configuration**
+   ```bash
+   # Copy the example configuration
+   cp config.example.yaml config.yaml
+   
+   # Edit the configuration file with your settings
+   nano config.yaml
+   ```
+
 ## Setup
 
-### 1. Facial Recognition Setup
+### 1. Configuration Setup
+
+The system uses a YAML configuration file for all settings:
+
+1. **Copy the example configuration**:
+   ```bash
+   cp config.example.yaml config.yaml
+   ```
+
+2. **Edit the configuration file** with your specific settings:
+   - Update smart light IP addresses
+   - Set your location coordinates for weather
+   - Configure voice settings
+   - Adjust camera settings
+
+### 2. Facial Recognition Setup
 
 The system requires pre-trained facial encodings. You need to:
 
 1. Create a `facial_recognition/` directory
 2. Add an `encodings.pickle` file with known face encodings
-3. The system will automatically copy this file to the working directory
+3. Update the `encodings_file` path in your `config.yaml`
+4. The system will automatically copy this file to the working directory
 
 **Note**: The `encodings.pickle` file should contain a dictionary with:
 - `"encodings"`: List of face encodings
 - `"names"`: List of corresponding names
 
-### 2. Smart Light Configuration
+### 3. Smart Light Configuration
 
-Update the IP address in `logic.py` for your Kasa smart lights:
-```python
-cmd = ["kasa", "--host", "192.168.12.238"]  # Change to your light's IP
+Update the smart light settings in your `config.yaml`:
+```yaml
+smart_lights:
+  kasa_host: "192.168.12.238"  # Your light's IP address
+  kasa_port: 9999              # Kasa port
+  default_brightness: 80       # Default brightness
 ```
 
-### 3. Weather API (Optional)
+### 4. Weather API (Optional)
 
-The system uses Meteomatics API for weather data. For production use, you may want to:
-- Sign up for an API key
-- Update the weather function to use authentication
-- Currently uses mock data for demonstration
+The system uses Meteomatics API for weather data. For production use:
+- Set `use_mock_data: false` in your config
+- Update location coordinates in the weather section
+- The system includes caching and error handling for API calls
 
 ## Usage
 
@@ -149,65 +177,119 @@ Color? blue
 
 ```
 smartHome/
-├── driver.py              # Main application driver
-├── logic.py               # User management and command logic
-├── facial_req.py          # Facial recognition system
-├── hand_req.py            # Hand gesture recognition (experimental)
-├── facial_recognition/    # Directory for face encodings
-│   └── encodings.pickle   # Pre-trained face data
-└── README.md              # This file
+├── driver.py                  # Main application driver
+├── logic.py                   # User management and command logic
+├── facial_req.py              # Facial recognition system
+├── hand_req.py                # Hand gesture recognition (experimental)
+├── config_manager.py          # Configuration management
+├── error_handler.py           # Error handling and recovery
+├── config.yaml                # Configuration file (create from example)
+├── config.example.yaml        # Example configuration
+├── requirements.txt           # Python dependencies
+├── facial_recognition/        # Directory for face encodings
+│   └── encodings.pickle       # Pre-trained face data
+└── README.md                  # This file
 ```
 
 ## Configuration
 
-### Voice Settings
-Modify voice properties in `driver.py`:
-```python
-eng.setProperty('rate', 160)  # Speech rate
-eng.setProperty('voice', voices[16].id)  # Voice selection
+All configuration is now managed through the `config.yaml` file. The system includes:
+
+### Configuration Management
+- **Centralized Settings**: All settings in one YAML file
+- **Validation**: Automatic configuration validation on startup
+- **Defaults**: Fallback to sensible defaults if configuration is missing
+- **Environment Support**: Easy to modify for different environments
+
+### Key Configuration Sections
+
+**Voice Settings**:
+```yaml
+voice:
+  rate: 160                    # Speech rate
+  voice_index: 16              # Voice selection
+  volume: 1.0                  # Volume level
 ```
 
-### Camera Settings
-Adjust camera source in `facial_req.py`:
-```python
-vs = VideoStream(src=0, framerate=2).start()  # Change src for different cameras
+**Camera Settings**:
+```yaml
+camera:
+  source: 0                    # Camera source
+  framerate: 2                 # Processing framerate
+  width: 500                   # Frame width
 ```
 
-### Weather Location
-Update coordinates in `logic.py` for your location:
-```python
-# Current: Chicago coordinates (41.8781, -87.6298)
-url = f"https://api.meteomatics.com/{formatted_datetime}/{format}/41.8781,87.6298/html"
+**Smart Light Settings**:
+```yaml
+smart_lights:
+  kasa_host: "192.168.12.238"  # Your light's IP
+  colors:
+    red: [0, 100, 80]          # HSV color values
 ```
 
-## Troubleshooting
+**Weather Settings**:
+```yaml
+weather:
+  location:
+    latitude: 41.8781          # Your latitude
+    longitude: -87.6298        # Your longitude
+  use_mock_data: true          # Use mock data for testing
+```
+
+## Error Handling & Troubleshooting
+
+The system now includes comprehensive error handling and recovery mechanisms:
+
+### Error Handling Features
+- **Custom Exceptions**: Specific error types for different components
+- **Automatic Recovery**: Attempts to recover from common errors
+- **Graceful Degradation**: Continues operation when possible
+- **Detailed Logging**: Comprehensive error logging with context
+- **Error Statistics**: Track and monitor error patterns
 
 ### Common Issues
 
 1. **Camera not found**
    - Check camera permissions
-   - Try different camera sources (src=0, 1, 2, etc.)
+   - Try different camera sources in config.yaml
+   - Verify camera is not in use by another application
 
 2. **Face recognition not working**
-   - Ensure `encodings.pickle` file exists
+   - Ensure `encodings.pickle` file exists and path is correct in config
    - Check lighting conditions
    - Verify face is clearly visible
+   - Adjust tolerance setting in configuration
 
 3. **Voice not working**
    - Install system text-to-speech drivers
    - Check audio output settings
+   - Verify voice index in configuration
 
 4. **Smart lights not responding**
-   - Verify IP address is correct
+   - Verify IP address is correct in config.yaml
    - Check network connectivity
    - Ensure Kasa CLI is installed
+   - Check light power and network status
 
-### Error Messages
+5. **Configuration errors**
+   - Validate your config.yaml file
+   - Check for syntax errors
+   - Ensure all required sections are present
 
-- `"Found encodings"` - System found face data
-- `"Copyied encodings"` - System copied face data to working directory
-- `"Recognized [name]"` - Face recognition successful
-- `"Hello [name]"` - Voice greeting for recognized user
+### Error Messages & Logging
+
+The system now provides detailed logging:
+- **Log File**: Check `smartHome.log` for detailed error information
+- **Console Output**: Real-time status and error messages
+- **Error Recovery**: Automatic attempts to recover from failures
+
+### Debugging
+
+To enable debug logging, set in your config.yaml:
+```yaml
+system:
+  log_level: "DEBUG"
+```
 
 ## Security Considerations
 

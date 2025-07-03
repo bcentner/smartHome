@@ -1,0 +1,63 @@
+# SmartHome Configuration Example
+# Copy this file to config.yaml and modify the settings below
+
+# Voice Settings
+voice:
+  rate: 160                    # Speech rate (words per minute)
+  voice_index: 16              # Voice selection (check available voices on your system)
+  volume: 1.0                  # Volume level (0.0 to 1.0)
+
+# Camera Settings
+camera:
+  source: 0                    # Camera source (0=default, 1=external, etc.)
+  framerate: 2                 # Frames per second for processing
+  width: 500                   # Frame width for processing
+  detection_confidence: 0.8    # Face detection confidence threshold
+
+# Smart Light Settings
+smart_lights:
+  kasa_host: "192.168.12.238"  # Your Kasa smart light IP address
+  kasa_port: 9999              # Kasa port (usually 9999)
+  default_brightness: 80       # Default brightness (0-100)
+  colors:
+    red: [0, 100, 80]          # HSV values for red
+    green: [123, 86, 80]       # HSV values for green
+    blue: [245, 84, 70]        # HSV values for blue
+    white: [0, 0, 100]         # HSV values for white
+    purple: [280, 100, 80]     # HSV values for purple
+    orange: [30, 100, 80]      # HSV values for orange
+
+# Weather Settings
+weather:
+  api_url: "https://api.meteomatics.com"  # Weather API URL
+  location:
+    latitude: 41.8781          # Your latitude
+    longitude: -87.6298        # Your longitude
+    city: "Chicago"            # Your city name
+  cache_duration: 300          # Cache duration in seconds (5 minutes)
+  use_mock_data: true          # Set to false for real API calls
+
+# Facial Recognition Settings
+facial_recognition:
+  encodings_file: "facial_recognition/encodings.pickle"  # Path to face encodings
+  tolerance: 0.6               # Face matching tolerance (0.0-1.0)
+  detection_interval: 1.0      # Detection interval in seconds
+
+# Music Settings
+music:
+  default_file: "music.mp3"    # Default music file path
+  player: "mpg123"             # Music player command
+  volume: 80                   # Music volume (0-100)
+
+# System Settings
+system:
+  log_level: "INFO"            # Logging level (DEBUG, INFO, WARNING, ERROR)
+  log_file: "smartHome.log"    # Log file path
+  max_users: 5                 # Maximum number of concurrent users
+  session_timeout: 3600        # Session timeout in seconds (1 hour)
+
+# Hand Gesture Settings (Experimental)
+hand_gestures:
+  enabled: false               # Enable hand gesture recognition
+  detection_confidence: 0.8    # Hand detection confidence
+  max_hands: 1                 # Maximum number of hands to detect 
